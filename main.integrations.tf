@@ -17,14 +17,13 @@ resource "fabric_workspace_git" "this" {
     connection_id = var.git.connection_id
   }
 
-  depends_on = [fabric_workspace_network_communication_policy.this, fabric_workspace_git_outbound_policy.this]
-
   lifecycle {
     precondition {
       condition     = var.outbound_access_protection == null ? true : var.outbound_access_protection.allow_git
       error_message = "Git integration requires outbound_access_protection.allow_git = true when OAP is enabled."
     }
   }
+  depends_on = [fabric_workspace_network_communication_policy.this, fabric_workspace_git_outbound_policy.this]
 }
 
 resource "fabric_workspace_managed_private_endpoint" "this" {

@@ -1,3 +1,10 @@
+variable "private_access_verified" {
+  type        = bool
+  default     = false
+  description = "Consumer acknowledgement that private endpoint connectivity, DNS, and Fabric provider private routing have been verified. Required before denying public inbound access; this is not an automated connectivity test."
+  nullable    = false
+}
+
 variable "private_link" {
   type = object({
     name      = string
@@ -26,14 +33,12 @@ DESCRIPTION
     condition     = var.private_link == null ? true : can(provider::azapi::parse_resource_id("Microsoft.Resources/resourceGroups", var.private_link.parent_id))
     error_message = "private_link.parent_id must be an existing resource group ARM ID."
   }
-
   validation {
     condition = var.private_link == null ? true : alltrue([for endpoint in values(var.private_link.endpoints) :
       can(provider::azapi::parse_resource_id("Microsoft.Network/virtualNetworks/subnets", endpoint.subnet_resource_id))
     ])
     error_message = "Each private endpoint subnet_resource_id must be a subnet ARM ID."
   }
-
   validation {
     condition = var.private_link == null ? true : alltrue([for endpoint in values(var.private_link.endpoints) :
       endpoint.private_dns_zone_resource_id == null ? true :
@@ -46,15 +51,8 @@ DESCRIPTION
 variable "public_network_access_enabled" {
   type        = bool
   default     = true
-  nullable    = false
   description = "Allow public inbound workspace access. Set false only after validating private routing, DNS, and the consumer's workspace-specific Fabric provider configuration."
-}
-
-variable "private_access_verified" {
-  type        = bool
-  default     = false
   nullable    = false
-  description = "Consumer acknowledgement that private endpoint connectivity, DNS, and Fabric provider private routing have been verified. Required before denying public inbound access; this is not an automated connectivity test."
 }
 
 variable "tags" {

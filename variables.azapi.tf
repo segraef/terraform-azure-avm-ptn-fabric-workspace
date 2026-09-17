@@ -1,19 +1,3 @@
-variable "resource_types" {
-  type = object({
-    fabric_private_link_services_for_fabric           = optional(string, "Microsoft.Fabric/privateLinkServicesForFabric@2024-06-01")
-    network_private_endpoints                         = optional(string, "Microsoft.Network/privateEndpoints@2024-05-01")
-    network_private_endpoints_private_dns_zone_groups = optional(string, "Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-05-01")
-  })
-  default     = {}
-  nullable    = false
-  description = <<DESCRIPTION
-AzAPI resource types and API versions owned by this pattern.
-- `fabric_private_link_services_for_fabric` - Workspace inbound Private Link service.
-- `network_private_endpoints` - Azure private endpoints.
-- `network_private_endpoints_private_dns_zone_groups` - Endpoint DNS zone groups.
-DESCRIPTION
-}
-
 variable "ignore_body_changes" {
   type = object({
     fabric_private_link_services_for_fabric           = optional(list(string), [])
@@ -21,13 +5,29 @@ variable "ignore_body_changes" {
     network_private_endpoints_private_dns_zone_groups = optional(list(string), [])
   })
   default     = {}
-  nullable    = false
   description = <<DESCRIPTION
 Body-relative dot paths ignored by AzAPI. Ignored configuration is not sent to Azure; changes take effect only after apply. Non-empty lists require Terraform 1.11 or later. List indices are not supported.
 - `fabric_private_link_services_for_fabric` - Paths on the Fabric Private Link service.
 - `network_private_endpoints` - Paths on Azure private endpoints.
 - `network_private_endpoints_private_dns_zone_groups` - Paths on endpoint DNS zone groups.
 DESCRIPTION
+  nullable    = false
+}
+
+variable "resource_types" {
+  type = object({
+    fabric_private_link_services_for_fabric           = optional(string, "Microsoft.Fabric/privateLinkServicesForFabric@2024-06-01")
+    network_private_endpoints                         = optional(string, "Microsoft.Network/privateEndpoints@2024-05-01")
+    network_private_endpoints_private_dns_zone_groups = optional(string, "Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-05-01")
+  })
+  default     = {}
+  description = <<DESCRIPTION
+AzAPI resource types and API versions owned by this pattern.
+- `fabric_private_link_services_for_fabric` - Workspace inbound Private Link service.
+- `network_private_endpoints` - Azure private endpoints.
+- `network_private_endpoints_private_dns_zone_groups` - Endpoint DNS zone groups.
+DESCRIPTION
+  nullable    = false
 }
 
 variable "retry" {

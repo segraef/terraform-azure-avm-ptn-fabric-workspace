@@ -9,14 +9,13 @@ resource "fabric_workspace_network_communication_policy" "this" {
     public_access_rules = { default_action = var.outbound_access_protection == null ? "Allow" : "Deny" }
   }
 
-  depends_on = [fabric_workspace_role_assignment.this, azapi_resource.private_dns_zone_group, azapi_resource.private_endpoint]
-
   lifecycle {
     precondition {
       condition     = var.public_network_access_enabled || (var.private_access_verified && length(local.private_endpoints) > 0)
       error_message = "Denying public inbound access requires a private endpoint and private_access_verified = true after verifying routing, DNS, and provider private connectivity."
     }
   }
+  depends_on = [fabric_workspace_role_assignment.this, azapi_resource.private_dns_zone_group, azapi_resource.private_endpoint]
 }
 
 resource "fabric_workspace_outbound_gateway_rules" "this" {

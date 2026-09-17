@@ -34,7 +34,6 @@ DESCRIPTION
     )
     error_message = "git requires a configured connection GUID, GitHub or AzureDevOps, a supported initialization strategy, and an absolute repository directory."
   }
-
   validation {
     condition = var.git == null ? true : (var.git.provider_type == "GitHub" ? (
       try(length(trimspace(var.git.owner_name)) > 0, false) && var.git.organization_name == null && var.git.project_name == null
@@ -53,7 +52,6 @@ variable "managed_private_endpoints" {
     request_message                 = optional(string, "Requested by the workspace administrator.")
   }))
   default     = {}
-  nullable    = false
   description = <<DESCRIPTION
 Outbound Fabric-managed private endpoints, keyed by stable caller-chosen names. These are separate from inbound Azure private endpoints.
 - `name` - Endpoint name, at most 64 characters.
@@ -62,6 +60,7 @@ Outbound Fabric-managed private endpoints, keyed by stable caller-chosen names. 
 - `request_message` - Approval request, at most 140 characters.
 Target owners must approve the connection. Creation is not proof of approval, reachability, workload support, or destination authorization.
 DESCRIPTION
+  nullable    = false
 
   validation {
     condition = alltrue([for endpoint in values(var.managed_private_endpoints) :

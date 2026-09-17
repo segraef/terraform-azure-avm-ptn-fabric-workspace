@@ -1,5 +1,6 @@
 resource "modtm_telemetry" "telemetry" {
   count = var.enable_telemetry ? 1 : 0
+
   tags = merge({
     subscription_id = one(data.azapi_client_config.telemetry).subscription_id
     tenant_id       = one(data.azapi_client_config.telemetry).tenant_id
@@ -10,8 +11,9 @@ resource "modtm_telemetry" "telemetry" {
 }
 
 data "modtm_module_source" "telemetry" {
+  count = var.enable_telemetry ? 1 : 0
+
   module_path = path.module
-  count       = var.enable_telemetry ? 1 : 0
 }
 
 data "azapi_client_config" "telemetry" {
