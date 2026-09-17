@@ -24,13 +24,12 @@ provider "fabric" {
 
 module "workspace" {
   source = "../../"
-
-  capacity_id      = var.capacity_id
-  name             = var.name
-  enable_telemetry = var.enable_telemetry
-
   providers = {
     fabric        = fabric
     fabric.global = fabric.global
   }
+
+  capacity_id      = var.capacity_id
+  name             = var.name
+  enable_telemetry = var.enable_telemetry
 }

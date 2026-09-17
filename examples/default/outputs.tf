@@ -1,9 +1,9 @@
 output "workspace_id" {
-  value       = module.workspace.workspace_id
   description = "Created Fabric workspace GUID."
+  value       = module.workspace.workspace_id
 }
 
 output "workspace_identity" {
-  value       = module.workspace.workspace_identity
   description = "Workspace identity for separately managed destination permissions."
+  value       = module.workspace.workspace_identity
 }
